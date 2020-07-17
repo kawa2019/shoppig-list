@@ -27,12 +27,19 @@
         <label for="category">Kategoria:</label>
         <select id="category"> </select>
         <label for="product">Nazwa produktu:</label>
-        <input type="text" placeholder="produkt" id="product" />
-        <label for="quantityProduct">ciężar</label>
-        <input type="text" id="quantityProduct" />
+        <input
+          type="text"
+          maxlength="10"
+          pattern="[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż]{1,10}"
+          placeholder="produkt"
+          id="product"
+          required
+        />
+        <label for="quantityProductLabel">ciężar w kg:</label>
+        <input type="text" id="quantityProduct" pattern="[0-9]{1,2}" maxlength="2" required />
         <input type="submit" />
       </form>
-      <div class="shoppingList">
+      <div class="container-shoppingList">
         <h1>koszyk</h1>
       </div>
     </div>
