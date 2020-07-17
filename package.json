@@ -4,14 +4,10 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.config.dev.js --open",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js --colors",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "lint": "lint-staged && pretty-quick --staged"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged && jest"
-    }
-  },
+
   "lint-staged": {
     "src/**/*.js": [
       "eslint --fix"

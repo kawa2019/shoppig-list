@@ -1,0 +1,25 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .shoppingList {
+    h1 {
+      border-bottom: 1px solid #000;
+    }
+    width: 300px;
+    height: 600px;
+    border: 1px solid #000;
+    margin-left: 100px;
+    overflow: scroll;
+  }
+  form {
+    height: 400px;
+    * {
+      display: block;
+    }
+    input {
+      margin-bottom: 10px;
+    }
+  }
+}
