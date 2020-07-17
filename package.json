@@ -9,7 +9,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && pretty-quick --staged && jest --passWithNoTests"
+      "pre-commit": "lint-staged && pretty-quick --staged && jest "
     }
   },
   "lint-staged": {
