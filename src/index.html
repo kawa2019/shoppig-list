@@ -29,19 +29,28 @@
         <label for="product">Nazwa produktu:</label>
         <input
           type="text"
-          maxlength="10"
-          pattern="[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż]{1,10}"
+          maxlength="20"
+          pattern="[A-ZĄĆĘŁŃÓŚŹŻa-ząćęłńóśźż0-9 ]{1,20}"
+          title="dozwolone litery i liczby"
           placeholder="produkt"
           id="product"
           required
         />
         <label for="quantityProductLabel">ciężar w kg:</label>
-        <input type="text" id="quantityProduct" pattern="[0-9]{1,2}" maxlength="2" required />
+        <input
+          type="text"
+          id="quantityProduct"
+          pattern="(0|[1-9]\d*)(,\d+)?"
+          title="dozwolone tylko liczby oraz przecinek"
+          maxlength="5"
+          required
+        />
         <input type="submit" />
       </form>
       <div class="container-shoppingList">
         <h1>koszyk</h1>
       </div>
+      <ul class="oneBigshoppingList"></ul>
     </div>
     <!-- End your project here-->
   </body>

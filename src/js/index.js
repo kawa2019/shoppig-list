@@ -2,7 +2,7 @@ import * as mdb from 'mdb-ui-kit';
 // import { doc } from 'prettier';
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.querySelector('select');
-  const containerShoppingList = document.querySelector('.container-shoppingList');
+  const oneBigshoppingList = document.querySelector('.container-shoppingList');
   const quantityProductLabel = document.querySelector('label[for="quantityProductLabel"]');
   const counter = document.querySelector('select').options;
   const categoryArray = ['warzywa', 'owoce', 'nabiał', 'pieczywo', 'artykuł-higieniczne', 'napoje'];
@@ -10,10 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const newCategory = document.createElement('option');
     newCategory.innerHTML = category;
     const newCategoryList = document.createElement('ul');
-    newCategoryList.classList.add(category);
+    newCategoryList.classList.add(category, 'one-category');
+    newCategoryList.innerHTML = category;
     const allReturn = [
       select.appendChild(newCategory),
-      containerShoppingList.appendChild(newCategoryList),
+      oneBigshoppingList.appendChild(newCategoryList),
     ];
     return allReturn.map((reTurn) => reTurn);
   });
@@ -25,15 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return (quantityProductLabel.innerHTML = 'sztuk:');
   };
   select.addEventListener('change', kindOfCounter);
+  const allProductArray = [];
   const addProduct = (event) => {
     event.preventDefault();
-    const product = document.querySelector('#product');
+    const product = document.querySelector('#product').value;
     const quantityProduct = document.querySelector('#quantityProduct');
     const chooseCategory = [...counter].find((option) => option.selected === true).innerHTML;
-    const shoppingList = document.querySelector(`.${chooseCategory}`);
-    const newProduct = document.createElement('li');
-    newProduct.innerHTML = `${product.value} ${quantityProductLabel.innerHTML}${quantityProduct.value}`;
-    return shoppingList.appendChild(newProduct);
+    const repeatProduct = allProductArray.find((item) => item === product);
+    allProductArray.push(product);
+    if (!repeatProduct) {
+      const shoppingList = document.querySelector(`.${chooseCategory}`);
+      const newProduct = document.createElement('li');
+      newProduct.classList.add('one-product');
+      newProduct.innerHTML = `${product} ${quantityProductLabel.innerHTML}${quantityProduct.value}`;
+      return shoppingList.appendChild(newProduct);
+    }
+    return false;
   };
   document.querySelector('form').addEventListener('submit', addProduct);
 });
