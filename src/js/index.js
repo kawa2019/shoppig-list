@@ -1,5 +1,5 @@
 import * as mdb from 'mdb-ui-kit';
-// import { doc } from 'prettier';
+
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.querySelector('select');
   const oneBigshoppingList = document.querySelector('.container-shoppingList');
@@ -37,11 +37,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!repeatProduct) {
       const shoppingList = document.querySelector(`.${chooseCategory}`);
       const newProduct = document.createElement('li');
+      const error = document.querySelector('.error');
       newProduct.classList.add('one-product');
       newProduct.innerHTML = `${product} ${quantityProductLabel.innerHTML}${quantityProduct.value}`;
+      if (error !== null) {
+        error.parentNode.removeChild(error);
+      }
       return shoppingList.appendChild(newProduct);
     }
-    return false;
+    const newError = document.createElement('p');
+    newError.classList.add('error');
+    newError.style.color = '#f00';
+    newError.innerHTML = 'produkt się powtarza';
+    return quantityProduct.parentElement.insertBefore(
+      newError,
+      quantityProduct.parentElement.children[6]
+    );
   };
   document.querySelector('form').addEventListener('submit', addProduct);
 });
