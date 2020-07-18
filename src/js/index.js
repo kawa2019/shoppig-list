@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const oneBigshoppingList = document.querySelector('.container-shoppingList');
   const quantityProductLabel = document.querySelector('label[for="quantityProductLabel"]');
   const counter = document.querySelector('select').options;
+  const counterAllProduct = document.querySelector('h4');
   const categoryArray = ['warzywa', 'owoce', 'nabiał', 'pieczywo', 'artykuł-higieniczne', 'napoje'];
   categoryArray.map((category) => {
     const newCategory = document.createElement('option');
@@ -27,10 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   select.addEventListener('change', kindOfCounter);
   const allProductArray = [];
-  // const removeProductFn = () => {
-  //   const parentBtn = this.parentElement
-  //   return parentBtn.parentElement.removeChild(parentBtn)
-  // }
   document.querySelector('.one-product');
   const addProduct = (event) => {
     event.preventDefault();
@@ -41,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     allProductArray.push(product);
     if (!repeatProduct) {
       const shoppingList = document.querySelector(`.${chooseCategory}`);
-      const counterAllProduct = document.querySelector('h4');
       const allProduct = document.querySelectorAll('.one-product');
       const newProduct = document.createElement('li');
       const error = document.querySelector('.error');
@@ -52,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
       removeProduct.innerHTML = 'x';
       removeProduct.classList.add('removeProduct');
       removeProduct.addEventListener('click', () => {
+        counterAllProduct.innerHTML = `Wszystkie produkty: ${allProduct.length}`;
         const parentBtn = removeProduct.parentElement;
         return parentBtn.parentElement.removeChild(parentBtn);
       });
