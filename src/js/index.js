@@ -28,19 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   select.addEventListener('change', kindOfCounter);
   const allProductArray = [];
+
   document.querySelector('.one-product');
   const addProduct = (event) => {
     event.preventDefault();
+    // stwórz zmienn
+    const error = document.querySelector('.error');
+    localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray));
+    const arrayOfRepeatProduct = JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
+    console.log(arrayOfRepeatProduct);
     const product = document.querySelector('#product').value;
     const quantityProduct = document.querySelector('#quantityProduct');
     const chooseCategory = [...counter].find((option) => option.selected === true).innerText;
-    const repeatProduct = allProductArray.find((item) => item === product);
+    const repeatProduct = arrayOfRepeatProduct.find((item) => item === product);
     allProductArray.push(product);
     if (!repeatProduct) {
       const shoppingList = document.querySelector(`.${chooseCategory}`);
       const allProduct = document.querySelectorAll('.one-product');
       const newProduct = document.createElement('li');
-      const error = document.querySelector('.error');
       newProduct.classList.add('one-product');
       counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length + 1}`;
       newProduct.innerHTML = `${product} ${quantityProductLabel.innerText}${quantityProduct.value}`;
@@ -58,14 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       return shoppingList.appendChild(newProduct);
     }
-    const newError = document.createElement('p');
-    newError.classList.add('error');
-    newError.style.color = '#f00';
-    newError.innerText = 'produkt się powtarza';
-    return quantityProduct.parentElement.insertBefore(
-      newError,
-      quantityProduct.parentElement.children[6]
-    );
+    if (!error) {
+      const newError = document.createElement('p');
+      newError.classList.add('error');
+      newError.style.color = '#f00';
+      newError.innerText = 'produkt się powtarza';
+      return quantityProduct.parentElement.insertBefore(
+        newError,
+        quantityProduct.parentElement.children[6]
+      );
+    }
+    return false;
   };
   document.querySelector('form').addEventListener('submit', addProduct);
 });
