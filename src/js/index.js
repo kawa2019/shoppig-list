@@ -37,41 +37,49 @@ document.addEventListener('DOMContentLoaded', () => {
   if (allProductList !== null) {
     oneBigshoppingList.innerHTML = `${allProductList}`;
   }
-  //
-  const beginStateAllProductArray = localStorage.getItem('arrayOfRepeatProduct')
-    ? JSON.parse(localStorage.getItem('arrayOfRepeatProduct'))
-    : [];
+  // state of allProductArray from locale storage loading on start
+  const beginStateAllProductArray = () => {
+    if (localStorage.getItem('arrayOfRepeatProduct')) {
+      return JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
+    }
+    return [];
+  };
+  // fn event on remove btn
+  const removeProductFn = (removeBtn, allProductArray) => {
+    //  counterAllProduct.innerHTML = `Wszystkie produkty: ${allProductArray.length-1}`;
+    const parentBtn = removeBtn.parentElement;
+    const removeName = parentBtn.innerText.slice(
+      0,
+      parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
+    );
+    const newArrayOfRepeatProduct = allProductArray.filter(
+      (productName) => productName !== removeName
+    );
+    const allReturn = [
+      parentBtn.parentElement.removeChild(parentBtn),
+      localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
+      localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(newArrayOfRepeatProduct)),
+    ];
+    return allReturn.map((reTurn) => reTurn);
+  };
   // again adding event on removeProduct element
   [...document.querySelectorAll('.removeProduct')].map((product, index) => {
-    const allProductArray = [...beginStateAllProductArray];
-    return document
-      .querySelectorAll('.removeProduct')
-      [index].addEventListener('click', function () {
-        counterAllProduct.innerHTML = 'Wszystkie produkty: ';
-        const parentBtn = this.parentElement;
-        const removeName = parentBtn.innerText.slice(
-          0,
-          parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
-        );
-        const newArrayOfRepeatProduct = allProductArray.filter(
-          (productName) => productName !== removeName
-        );
-        localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(newArrayOfRepeatProduct));
-
-        const allReturn = [
-          parentBtn.parentElement.removeChild(parentBtn),
-          localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
-        ];
-        return allReturn.map((reTurn) => reTurn);
-      });
+    const allProductArray = [...beginStateAllProductArray()];
+    const removeBtn = document.querySelectorAll('.removeProduct')[index];
+    return removeBtn.addEventListener(
+      'click',
+      () => {
+        removeProductFn(removeBtn, allProductArray);
+      },
+      false
+    );
   });
 
   // making fn for form event
   const addProduct = (event) => {
     event.preventDefault();
-    // display locale storage products
-
-    const allProductArray = [...beginStateAllProductArray];
+    const allProductArray = [...beginStateAllProductArray()];
+    console.log(allProductArray);
     const product = document.querySelector('#product').value;
     allProductArray.push(product);
     const error = document.querySelector('.error');
@@ -86,33 +94,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const allProduct = document.querySelectorAll('.one-product');
       const newProduct = document.createElement('li');
       newProduct.classList.add('one-product');
-      counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length + 1}`;
+      console.log(counterAllProduct);
       newProduct.innerHTML = `${product} ${quantityProductLabel.innerText}${quantityProduct.value}`;
       const removeProduct = document.createElement('span');
       removeProduct.innerHTML = 'x';
       removeProduct.classList.add('removeProduct');
-      removeProduct.addEventListener('click', () => {
-        counterAllProduct.innerHTML = `Wszystkie produkty: ${allProduct.length}`;
-        const parentBtn = removeProduct.parentElement;
-        const removeName = parentBtn.innerText.slice(
-          0,
-          parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
-        );
-        const newArrayOfRepeatProduct = allProductArray.filter(
-          (productName) => productName !== removeName
-        );
-
-        const allReturn = [
-          parentBtn.parentElement.removeChild(parentBtn),
-          localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
-          localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(newArrayOfRepeatProduct)),
-        ];
-        return allReturn.map((reTurn) => reTurn);
-      });
+      removeProduct.addEventListener(
+        'click',
+        () => {
+          removeProductFn(removeProduct, allProductArray);
+        },
+        false
+      );
       newProduct.appendChild(removeProduct);
       if (error !== null) {
         error.parentNode.removeChild(error);
       }
+      counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length + 1}`;
       shoppingList.appendChild(newProduct);
       localStorage.setItem('allProductList', oneBigshoppingList.innerHTML);
       return shoppingList.appendChild(newProduct);
