@@ -2,6 +2,7 @@ import * as mdb from 'mdb-ui-kit';
 
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.querySelector('select');
+  const allProductList = localStorage.getItem('allProductList');
   const oneBigshoppingList = document.querySelector('.container-shoppingList');
   const quantityProductLabel = document.querySelector('label[for="quantityProductLabel"]');
   const counter = document.querySelector('select').options;
@@ -19,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     return allReturn.map((reTurn) => reTurn);
   });
+  // const omasta = allProductList.map(product => product)
+
   const kindOfCounter = () => {
     if (counter[0].selected || counter[1].selected) {
       return (quantityProductLabel.innerText = 'ciężar w kg:');
@@ -28,15 +31,29 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   select.addEventListener('change', kindOfCounter);
   const allProductArray = [];
+  /// /////////////////////////
+  console.log(allProductList);
+  oneBigshoppingList.innerHTML = `${allProductList}`;
+  [...document.querySelectorAll('.removeProduct')].map((product, index) => {
+    return document
+      .querySelectorAll('.removeProduct')
+      [index].addEventListener('click', function () {
+        counterAllProduct.innerHTML = 'Wszystkie produkty: ';
+        const parentBtn = this.parentElement;
+        return parentBtn.parentElement.removeChild(parentBtn);
+      });
+  });
+
+  /// ////////////////
 
   document.querySelector('.one-product');
   const addProduct = (event) => {
     event.preventDefault();
-    // stwórz zmienn
+
     const error = document.querySelector('.error');
     localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray));
+
     const arrayOfRepeatProduct = JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
-    console.log(arrayOfRepeatProduct);
     const product = document.querySelector('#product').value;
     const quantityProduct = document.querySelector('#quantityProduct');
     const chooseCategory = [...counter].find((option) => option.selected === true).innerText;
@@ -61,6 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (error !== null) {
         error.parentNode.removeChild(error);
       }
+      shoppingList.appendChild(newProduct);
+      const productsTag = oneBigshoppingList.innerHTML;
+      localStorage.setItem('allProductList', productsTag);
       return shoppingList.appendChild(newProduct);
     }
     if (!error) {
