@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const allProductList = localStorage.getItem('allProductList');
   const oneBigshoppingList = document.querySelector('.container-shoppingList');
   const quantityProductLabel = document.querySelector('label[for="quantityProductLabel"]');
-  const counterAllProduct = document.querySelector('h4');
   const categoryArray = ['warzywa', 'owoce', 'nabiał', 'pieczywo', 'artykuł-higieniczne', 'napoje'];
   //  const arrayOfRepeatProductParse=JSON.parse( localStorage.getItem('arrayOfRepeatProduct'))
 
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   select.addEventListener('change', kindOfCounter);
 
   //  prevent override of oneBigshoppingList.innerHTML when localestorage is empty or undefined
-  if (allProductList !== null) {
+  if (allProductList) {
     oneBigshoppingList.innerHTML = `${allProductList}`;
   }
   // state of allProductArray from locale storage loading on start
@@ -53,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       0,
       parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
     );
-    console.log(removeName);
     allProductArray = allProductArray.filter((productName) => productName !== removeName);
-    console.log(allProductArray);
     const allReturn = [
       parentBtn.parentElement.removeChild(parentBtn),
       localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
@@ -79,10 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addProduct = (event) => {
     event.preventDefault();
 
-    console.log(allProductArray);
     const product = document.querySelector('#product').value;
     allProductArray.push(product);
-    console.log(allProductArray);
     const error = document.querySelector('.error');
     localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray));
     const arrayOfRepeatProduct = JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
@@ -92,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const repeatProduct = arrayOfRepeatProduct.filter((item) => item === product);
     if (!(repeatProduct.length >= 2)) {
       const shoppingList = document.querySelector(`.${chooseCategory}`);
+      const counterAllProduct = document.querySelector('.counter');
       const allProduct = document.querySelectorAll('.one-product');
       const newProduct = document.createElement('li');
       newProduct.classList.add('one-product');
-      console.log(counterAllProduct);
       newProduct.innerHTML = `${product} ${quantityProductLabel.innerText}${quantityProduct.value}`;
       const removeProduct = document.createElement('span');
       removeProduct.innerHTML = 'x';
@@ -108,13 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
         false
       );
       newProduct.appendChild(removeProduct);
-      if (error !== null) {
+      if (error) {
         error.parentNode.removeChild(error);
       }
       counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length + 1}`;
-      shoppingList.appendChild(newProduct);
-      localStorage.setItem('allProductList', oneBigshoppingList.innerHTML);
-      return shoppingList.appendChild(newProduct);
+      const allReturn = [
+        shoppingList.appendChild(newProduct),
+        localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
+      ];
+      return allReturn.map((reTurn) => reTurn);
     }
     if (!error) {
       const newError = document.createElement('p');
