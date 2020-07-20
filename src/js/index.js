@@ -65,12 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   // again adding event on removeProduct element
   [...document.querySelectorAll('.removeProduct')].map((product, index) => {
-    const allProductArray = [...beginStateAllProductArray()];
     const removeBtn = document.querySelectorAll('.removeProduct')[index];
     return removeBtn.addEventListener(
       'click',
       () => {
-        removeProductFn(removeBtn, allProductArray);
+        removeProductFn(removeBtn);
       },
       false
     );
