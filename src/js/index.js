@@ -44,21 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return [];
   };
+  let allProductArray = [...beginStateAllProductArray()];
   // fn event on remove btn
-  const removeProductFn = (removeBtn, allProductArray) => {
+  const removeProductFn = (removeBtn) => {
     //  counterAllProduct.innerHTML = `Wszystkie produkty: ${allProductArray.length-1}`;
     const parentBtn = removeBtn.parentElement;
     const removeName = parentBtn.innerText.slice(
       0,
       parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
     );
-    const newArrayOfRepeatProduct = allProductArray.filter(
-      (productName) => productName !== removeName
-    );
+    console.log(removeName);
+    allProductArray = allProductArray.filter((productName) => productName !== removeName);
+    console.log(allProductArray);
     const allReturn = [
       parentBtn.parentElement.removeChild(parentBtn),
       localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
-      localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(newArrayOfRepeatProduct)),
+      localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray)),
     ];
     return allReturn.map((reTurn) => reTurn);
   };
@@ -78,10 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // making fn for form event
   const addProduct = (event) => {
     event.preventDefault();
-    const allProductArray = [...beginStateAllProductArray()];
+
     console.log(allProductArray);
     const product = document.querySelector('#product').value;
     allProductArray.push(product);
+    console.log(allProductArray);
     const error = document.querySelector('.error');
     localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray));
     const arrayOfRepeatProduct = JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       removeProduct.addEventListener(
         'click',
         () => {
-          removeProductFn(removeProduct, allProductArray);
+          return removeProductFn(removeProduct, allProductArray);
         },
         false
       );
