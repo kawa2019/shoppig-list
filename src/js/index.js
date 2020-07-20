@@ -46,7 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let allProductArray = [...beginStateAllProductArray()];
   // fn event on remove btn
   const removeProductFn = (removeBtn) => {
-    //  counterAllProduct.innerHTML = `Wszystkie produkty: ${allProductArray.length-1}`;
+    // changing counter
+    const counterAllProduct = document.querySelector('.counter');
+    const allProduct = document.querySelectorAll('.one-product');
+    counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length - 1}`;
+    // removing product
     const parentBtn = removeBtn.parentElement;
     const removeName = parentBtn.innerText.slice(
       0,
