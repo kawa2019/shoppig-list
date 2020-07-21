@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const oneBigshoppingList = document.querySelector('.container-shoppingList');
   const quantityProductLabel = document.querySelector('label[for="quantityProductLabel"]');
   const categoryArray = ['warzywa', 'owoce', 'nabiał', 'pieczywo', 'artykuł-higieniczne', 'napoje'];
-  //  const arrayOfRepeatProductParse=JSON.parse( localStorage.getItem('arrayOfRepeatProduct'))
 
   //  create options of select element, category of shopping list
   categoryArray.map((category) => {
@@ -44,6 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return [];
   };
   let allProductArray = [...beginStateAllProductArray()];
+
+  /// /////////////////////example place
+  let counterWeight = 0;
+  let counterTimes = 0;
+
+  /// /////////////////////
   // fn event on remove btn
   const removeProductFn = (removeBtn) => {
     // changing counter
@@ -56,6 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
       0,
       parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
     );
+    // const removeWeight =;
+    // const removeTimes;
+
+    if (parentBtn.innerText.slice(removeName.length + 1, removeName.length + 2) === 'c') {
+      counterWeight -= Number(
+        parentBtn.innerText.slice(
+          removeName.length + quantityProductLabel.innerText.length + 1,
+          parentBtn.innerText.length - 1
+        )
+      );
+    } else {
+      counterTimes -= Number(
+        parentBtn.innerText.slice(
+          removeName.length + quantityProductLabel.innerText.length + 1,
+          parentBtn.innerText.length - 1
+        )
+      );
+    }
     allProductArray = allProductArray.filter((productName) => productName !== removeName);
     const allReturn = [
       parentBtn.parentElement.removeChild(parentBtn),
@@ -79,20 +102,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // making fn for form event
   const addProduct = (event) => {
     event.preventDefault();
-
     const product = document.querySelector('#product').value;
     allProductArray.push(product);
     const error = document.querySelector('.error');
     localStorage.setItem('arrayOfRepeatProduct', JSON.stringify(allProductArray));
     const arrayOfRepeatProduct = JSON.parse(localStorage.getItem('arrayOfRepeatProduct'));
     const quantityProduct = document.querySelector('#quantityProduct');
+
     const chooseCategory = [...select.options].find((option) => option.selected === true).innerText;
 
     const repeatProduct = arrayOfRepeatProduct.filter((item) => item === product);
+
     if (!(repeatProduct.length >= 2)) {
       const shoppingList = document.querySelector(`.${chooseCategory}`);
       const counterAllProduct = document.querySelector('.counter');
+      const counterAllTimes = document.querySelector('h6');
       const allProduct = document.querySelectorAll('.one-product');
+      // podstawiam do zmiennej dla countera quantityProduct.value
+      if (quantityProductLabel.innerText === 'ciężar w kg:') {
+        counterWeight += Number(quantityProduct.value);
+      } else {
+        counterTimes += Number(quantityProduct.value);
+      }
       const newProduct = document.createElement('li');
       newProduct.classList.add('one-product');
       newProduct.innerHTML = `${product} ${quantityProductLabel.innerText}${quantityProduct.value}`;
@@ -102,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
       removeProduct.addEventListener(
         'click',
         () => {
-          return removeProductFn(removeProduct, allProductArray);
+          return removeProductFn(removeProduct);
         },
         false
       );
@@ -111,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         error.parentNode.removeChild(error);
       }
       counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length + 1}`;
+      counterAllTimes.innerText = `Razem sztuk: ${counterTimes} waga: ${counterWeight} `;
       const allReturn = [
         shoppingList.appendChild(newProduct),
         localStorage.setItem('allProductList', oneBigshoppingList.innerHTML),
