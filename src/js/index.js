@@ -44,11 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   let allProductArray = [...beginStateAllProductArray()];
 
-  let counterWeight = Number(localStorage.getItem('counterWeight'))
-    ? localStorage.getItem('counterWeight')
+  let counterWeight = localStorage.getItem('counterWeight')
+    ? Number(localStorage.getItem('counterWeight'))
     : 0;
-  let counterTimes = Number(localStorage.getItem('counterWeight'))
-    ? localStorage.getItem('counterWeight')
+  let counterTimes = localStorage.getItem('counterTimes')
+    ? Number(localStorage.getItem('counterTimes'))
     : 0;
   console.log(localStorage.getItem('counterWeight'));
   // fn event on remove btn
