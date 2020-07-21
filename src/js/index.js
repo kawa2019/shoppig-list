@@ -44,9 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   let allProductArray = [...beginStateAllProductArray()];
 
-  let counterWeight = 0;
-  let counterTimes = 0;
-
+  let counterWeight = Number(localStorage.getItem('counterWeight'))
+    ? localStorage.getItem('counterWeight')
+    : 0;
+  let counterTimes = Number(localStorage.getItem('counterWeight'))
+    ? localStorage.getItem('counterWeight')
+    : 0;
+  console.log(localStorage.getItem('counterWeight'));
   // fn event on remove btn
   const removeProductFn = (removeBtn) => {
     // changing counter
@@ -72,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
           parentBtn.innerText.length - 1
         )
       );
+      localStorage.setItem('counterWeight', counterWeight);
     } else {
       counterTimes -= Number(
         parentBtn.innerText.slice(
@@ -79,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
           parentBtn.innerText.length - 1
         )
       );
+      localStorage.setItem('counterTimes', counterTimes);
     }
     counterAllTimes.innerText = `Razem sztuk: ${counterTimes} waga: ${counterWeight} `;
     allProductArray = allProductArray.filter((productName) => productName !== removeName);
@@ -123,8 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // podstawiam do zmiennej dla countera quantityProduct.value
       if (quantityProductLabel.innerText === 'ciężar w kg:') {
         counterWeight += Number(quantityProduct.value);
+        localStorage.setItem('counterWeight', counterWeight);
       } else {
         counterTimes += Number(quantityProduct.value);
+        localStorage.setItem('counterTimes', counterTimes);
       }
       const newProduct = document.createElement('li');
       newProduct.classList.add('one-product');
