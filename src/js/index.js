@@ -44,41 +44,43 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   let allProductArray = [...beginStateAllProductArray()];
 
-  /// /////////////////////example place
   let counterWeight = 0;
   let counterTimes = 0;
 
-  /// /////////////////////
   // fn event on remove btn
   const removeProductFn = (removeBtn) => {
     // changing counter
     const counterAllProduct = document.querySelector('.counter');
     const allProduct = document.querySelectorAll('.one-product');
     counterAllProduct.innerText = `Wszystkie produkty: ${allProduct.length - 1}`;
+    const counterAllTimes = document.querySelector('h6');
+
     // removing product
     const parentBtn = removeBtn.parentElement;
     const removeName = parentBtn.innerText.slice(
       0,
-      parentBtn.innerText.indexOf(` ${quantityProductLabel.innerText}`)
+      parentBtn.innerText.indexOf(
+        parentBtn.innerText.includes('ciężar w kg:') ? ' ciężar w kg:' : ' sztuk:'
+      )
     );
-    // const removeWeight =;
-    // const removeTimes;
 
     if (parentBtn.innerText.slice(removeName.length + 1, removeName.length + 2) === 'c') {
       counterWeight -= Number(
         parentBtn.innerText.slice(
-          removeName.length + quantityProductLabel.innerText.length + 1,
+          removeName.length +
+            (parentBtn.innerText.includes('ciężar w kg:') && ' ciężar w kg:'.length),
           parentBtn.innerText.length - 1
         )
       );
     } else {
       counterTimes -= Number(
         parentBtn.innerText.slice(
-          removeName.length + quantityProductLabel.innerText.length + 1,
+          removeName.length + (parentBtn.innerText.includes(' sztuk:') && ' sztuk:'.length),
           parentBtn.innerText.length - 1
         )
       );
     }
+    counterAllTimes.innerText = `Razem sztuk: ${counterTimes} waga: ${counterWeight} `;
     allProductArray = allProductArray.filter((productName) => productName !== removeName);
     const allReturn = [
       parentBtn.parentElement.removeChild(parentBtn),
