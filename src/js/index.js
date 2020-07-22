@@ -1,4 +1,6 @@
 import * as mdb from 'mdb-ui-kit';
+import addingOptionCategory from './addingOptionCategory';
+import addingEventRemProduct from './addingEventRemProduct';
 
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.querySelector('select');
@@ -8,18 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoryArray = ['warzywa', 'owoce', 'nabiał', 'pieczywo', 'artykuł-higieniczne', 'napoje'];
 
   //  create options of select element, category of shopping list
-  categoryArray.map((category) => {
-    const newCategory = document.createElement('option');
-    newCategory.innerText = category;
-    const newCategoryList = document.createElement('ul');
-    newCategoryList.classList.add(category, 'one-category');
-    newCategoryList.innerText = category;
-    const allReturn = [
-      select.appendChild(newCategory),
-      oneBigshoppingList.appendChild(newCategoryList),
-    ];
-    return allReturn.map((reTurn) => reTurn);
-  });
+  addingOptionCategory(categoryArray, select, oneBigshoppingList);
 
   // fn to change kind of counter item or weight
   const kindOfCounter = () => {
@@ -43,14 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return [];
   };
   let allProductArray = [...beginStateAllProductArray()];
-
   let counterWeight = localStorage.getItem('counterWeight')
     ? Number(localStorage.getItem('counterWeight'))
     : 0;
   let counterTimes = localStorage.getItem('counterTimes')
     ? Number(localStorage.getItem('counterTimes'))
     : 0;
-  console.log(localStorage.getItem('counterWeight'));
   // fn event on remove btn
   const removeProductFn = (removeBtn) => {
     // changing counter
@@ -95,17 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     return allReturn.map((reTurn) => reTurn);
   };
-  // again adding event on removeProduct element
-  [...document.querySelectorAll('.removeProduct')].map((product, index) => {
-    const removeBtn = document.querySelectorAll('.removeProduct')[index];
-    return removeBtn.addEventListener(
-      'click',
-      () => {
-        removeProductFn(removeBtn);
-      },
-      false
-    );
-  });
+  // // again adding event on removeProduct element
+  addingEventRemProduct(removeProductFn);
 
   // making fn for form event
   const addProduct = (event) => {
